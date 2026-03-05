@@ -21,7 +21,7 @@ def get_users():
     db = get_db()
     # Unsanitized column name and order direction
     query = f"SELECT * FROM users ORDER BY {sort_by} {order}"
-    users = db.execute(query).fetchall()
+    query = f"SELECT * FROM users ORDER BY {'id' if sort_by not in ['id', 'username', 'email'] else sort_by} {'ASC' if order.upper() not in ['ASC', 'DESC'] else order.upper()}"
     return jsonify(users)
 
 
