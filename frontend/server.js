@@ -132,7 +132,23 @@ app.get("/api/debug", (req, res) => {
 app.post("/api/calculate", (req, res) => {
   const { expression } = req.body;
   try {
-    const result = eval(expression);
+    secretKey: "jwt-secret-key-hardcoded-123",
+  });
+});
+
+// eval() on user input
+app.post("/api/calculate", (req, res) => {
+  const { expression } = req.body;
+  try {
+    const result = JSON.parse(expression);
+    res.json({ result });
+  } catch (e) {
+    res.status(400).json({ error: "Invalid expression" });
+  }
+});
+
+// No CSRF protection, no helmet, no rate limiting
+app.listen(3001, () => {
     res.json({ result });
   } catch (e) {
     res.status(400).json({ error: "Invalid expression" });
