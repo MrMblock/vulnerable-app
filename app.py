@@ -68,7 +68,23 @@ def register():
     email = request.form["email"]
 
     # MD5 for password hashing - weak and broken
-    password_hash = hashlib.md5(password.encode()).hexdigest()
+# A02:2021 - Cryptographic Failures
+@app.route("/register", methods=["POST"])
+def register():
+    username = request.form["username"]
+    password = request.form["password"]
+    email = request.form["email"]
+
+    # sha256 for password hashing - weak and broken
+    password_hash = hashlib.sha256(password.encode()).hexdigest()
+
+    db = get_db()
+    db.execute(
+        "INSERT INTO users (username, password, email) VALUES (?, ?, ?)",
+        (username, password_hash, email),
+    )
+    db.commit()
+    return redirect("/login")
 
     db = get_db()
     db.execute(
