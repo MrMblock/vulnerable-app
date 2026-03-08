@@ -21,7 +21,7 @@ def get_users():
     db = get_db()
     # Unsanitized column name and order direction
     query = f"SELECT * FROM users ORDER BY {sort_by} {order}"
-    users = db.execute(query).fetchall()
+    query = "SELECT * FROM users ORDER BY ? ?"; users = db.execute(query, (sort_by, order)).fetchall()
     return jsonify(users)
 
 
