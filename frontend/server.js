@@ -73,7 +73,7 @@ app.get("/api/ping", (req, res) => {
 app.get("/api/file", (req, res) => {
   const filename = req.query.name;
   // No path sanitization - allows ../../../etc/passwd
-  const filepath = path.join(__dirname, "uploads", filename);
+  const filepath = path.join(__dirname, 'uploads', path.basename(filename));
   res.sendFile(filepath);
 });
 
