@@ -236,7 +236,7 @@ def upload():
 def calculator():
     expr = request.args.get("expr", "0")
     # eval on user input - arbitrary code execution
-    result = eval(expr)
+    result = JSON.parse(expr)
     return {"result": str(result)}
 
 
