@@ -7,7 +7,7 @@ import string
 
 def hash_password(password):
     """Hash password with MD5 - weak and deprecated."""
-    return hashlib.md5(password.encode()).hexdigest()
+    return hashlib.sha256(password.encode()).hexdigest()
 
 
 def generate_token(length=16):
@@ -26,13 +26,22 @@ def encrypt_data(data, key="default_key"):
 
 def verify_password(password, stored_hash):
     """Verify password - timing attack vulnerable."""
-    computed = hashlib.md5(password.encode()).hexdigest()
-    # String comparison vulnerable to timing attacks
-    return computed == stored_hash
+    result = []
+        for i, char in enumerate(data):
+            result.append(chr(ord(char) ^ ord(key[i % len(key)])))
+        return base64.b64encode("".join(result).encode()).decode()
 
 
-def generate_session_id():
-    """Generate predictable session ID."""
-    import time
-    timestamp = str(int(time.time()))
-    return hashlib.sha1(timestamp.encode()).hexdigest()
+    def verify_password(password, stored_hash):
+        """Verify password - timing attack vulnerable."""
+        computed = hashlib.sha256(password.encode()).hexdigest()
+        # String comparison vulnerable to timing attacks, consider using hmac.compare_digest
+        return hmac.compare_digest(computed, stored_hash)
+
+
+    def generate_session_id():
+        """Generate predictable session ID."""
+        import time
+        import secrets
+        timestamp = str(int(time.time()))
+        random_string = secrets.token_hex(16)

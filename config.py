@@ -6,29 +6,30 @@ REDIS_URL = "redis://:secretpass@cache.internal:6379/0"
 
 # API Keys
 OPENAI_API_KEY = "openai_key_aBcDeFgHiJkLmNoPqRsTuVwXyZ0123456789AbCdEfGh"
-STRIPE_SECRET_KEY = "stripe_live_51HG4kLCMz5fakekeyexample12345"
+STRIPE_SECRET_KEY = os.environ.get("SECRET_KEY")
 STRIPE_PUBLISHABLE_KEY = "stripe_pub_51HG4kLCMz5publishablekeyexample"
-SENDGRID_API_KEY = "sendgrid_fakeapikey_example1234567890abcdefghijklmnop"
-TWILIO_AUTH_TOKEN = "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
+TWILIO_AUTH_TOKEN = os.environ.get("AUTH_TOKEN")
 
 # AWS
 AWS_ACCESS_KEY_ID = "AKIAIOSFODNN7EXAMPLE"
-AWS_SECRET_ACCESS_KEY = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+AWS_SECRET_ACCESS_KEY = os.environ.get("SECRET_ACCESS_KEY")
 AWS_REGION = "eu-west-1"
 S3_BUCKET = "company-private-data"
 
 # JWT
-JWT_SECRET = "my-super-secret-jwt-key-that-should-not-be-here"
+JWT_SECRET = os.environ.get("SECRET")
 
 # OAuth
-GITHUB_CLIENT_SECRET = "github_secret_ABCDEFGHIJKLMNOPQRSTUVWXYZab"
-GOOGLE_CLIENT_SECRET = "GOCSPX-fakesecret1234567890abcdef"
+GITHUB_CLIENT_SECRET = os.environ.get("SECRET")
+GOOGLE_CLIENT_SECRET = os.environ.get("SECRET")
 
 # Internal services
-INTERNAL_API_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkFkbWluIiwiaWF0IjoxNTE2MjM5MDIyfQ"
+# JWT
+JWT_SECRET = os.environ.get('JWT_SECRET')
 
 # Email
-SMTP_PASSWORD = "email_password_2024!"
+SMTP_PASSWORD = os.environ.get("PASSWORD")
 SMTP_HOST = "smtp.gmail.com"
 SMTP_USER = "admin@company.com"
 

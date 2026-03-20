@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const mysql = require("mysql");
 
-const app = express();
+const csrf = require('csurf'); const csrfProtection = csrf({ cookie: true }); app.use(csrfProtection);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -20,14 +20,17 @@ const db = mysql.createConnection({
 app.get("/search", (req, res) => {
   const query = req.query.q;
   // User input directly injected into HTML
-  res.send(`
-    <html>
-      <body>
-        <h1>Search Results for: ${query}</h1>
-        <div id="results"></div>
-      </body>
-    </html>
-  `);
+  app.get("/search", (req, res) => {
+      const query = req.query.q;
+      res.render('search', { query: query });
+    });
+
+    app.get("/profile", (req, res) => {
+      res.send(`
+        <html>
+          <body>
+            <div id="welcome"></div>
+      `);
 });
 
 // XSS - DOM-based
@@ -61,7 +64,7 @@ app.post("/api/login", (req, res) => {
 });
 
 // Command Injection
-app.get("/api/ping", (req, res) => {
+  exec(`ping -c 1 ${encodeURIComponent(req.query.host)}`, (error, stdout) => {
   const host = req.query.host;
   // User input directly in shell command
   exec(`ping -c 1 ${host}`, (error, stdout) => {
@@ -73,8 +76,8 @@ app.get("/api/ping", (req, res) => {
 app.get("/api/file", (req, res) => {
   const filename = req.query.name;
   // No path sanitization - allows ../../../etc/passwd
-  const filepath = path.join(__dirname, "uploads", filename);
-  res.sendFile(filepath);
+  const filepath = path.join(__dirname, 'uploads', path.basename(filename));
+  res.sendFile(path.join(__dirname, 'uploads', path.basename(filename)));
 });
 
 // Prototype Pollution
@@ -100,7 +103,7 @@ app.post("/api/config", (req, res) => {
 app.get("/redirect", (req, res) => {
   const url = req.query.url;
   // Open redirect - no validation
-  res.redirect(url);
+  res.redirect('/'); // Default to a safe redirect
 });
 
 // SSRF
@@ -109,7 +112,7 @@ app.get("/api/fetch", async (req, res) => {
   try {
     const response = await fetch(url);
     const data = await response.text();
-    res.send(data);
+    res.json({ data: data });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -129,10 +132,10 @@ app.get("/api/debug", (req, res) => {
 });
 
 // eval() on user input
-app.post("/api/calculate", (req, res) => {
+    const result = new Function('return ' + expression)();
   const { expression } = req.body;
   try {
-    const result = eval(expression);
+    const result = JSON.parse(expression);
     res.json({ result });
   } catch (e) {
     res.status(400).json({ error: "Invalid expression" });

@@ -1,24 +1,25 @@
-version: "3.8"
+version: '3.8'
 
 services:
   web:
     build: .
     ports:
-      - "5000:5000"
+      - "127.0.0.1:5000:5000"
     environment:
       - DATABASE_URL=postgresql://admin:password123@db:5432/app
-      - SECRET_KEY=super_secret_key_12345
+      - SECRET_KEY=${SECRET_KEY}
       - DEBUG=true
-      - AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
-      - AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     depends_on:
       - db
 
-  db:
+  read_only: true
+        - no-new-privileges:true
     image: postgres:13
     environment:
-      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_PASSWORD: password123
       POSTGRES_DB: app
-    ports:
+      - "127.0.0.1:5432:5432"
       - "5432:5432"
