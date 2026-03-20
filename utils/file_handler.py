@@ -17,7 +17,7 @@ def process_file(filepath):
     # Filename directly interpolated into shell command
     output = subprocess.check_output(
         f"file {filepath} && wc -l {filepath}",
-        shell=True
+        shell=False
     )
     return output.decode()
 
