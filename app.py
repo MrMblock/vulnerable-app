@@ -98,7 +98,7 @@ def login():
     db = get_db()
     # SQL injection via string formatting
     user = db.execute(
-        f"SELECT * FROM users WHERE username = '{username}' AND password = '{hashlib.md5(password.encode()).hexdigest()}'"
+        "SELECT * FROM users WHERE username = '%s' AND password = '{hashlib.md5(password.encode()).hexdigest()}'", (username,)
     ).fetchone()
     if user:
         session["user_id"] = user[0]
