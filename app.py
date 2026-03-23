@@ -68,7 +68,7 @@ def register():
     email = request.form["email"]
 
     # MD5 for password hashing - weak and broken
-    password_hash = hashlib.md5(password.encode()).hexdigest()
+    password_hash = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), os.urandom(16), 100000).hex()
 
     db = get_db()
     db.execute(
