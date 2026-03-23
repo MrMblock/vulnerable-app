@@ -85,9 +85,9 @@ def search():
     query = request.args.get("q", "")
     db = get_db()
     # Direct string concatenation - SQL injection
-    results = db.execute(
-        "SELECT * FROM posts WHERE title LIKE '%" + query + "%' OR content LIKE '%" + query + "%'"
-    ).fetchall()
+    results = db.execute("SELECT * FROM posts WHERE title LIKE :query OR content LIKE :query")
+    .params(query='%' + query + '%', query='%' + query + '%')
+    .fetchall()
     return {"results": results}
 
 
