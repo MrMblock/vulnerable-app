@@ -127,7 +127,7 @@ def greet():
 def ping():
     host = request.args.get("host", "")
     # Command injection - user input directly in shell command
-    result = subprocess.check_output(f"ping -c 1 {host}", shell=True)
+    result = subprocess.check_output(['ping', '-c', '1', host])
     return result.decode()
 
 
