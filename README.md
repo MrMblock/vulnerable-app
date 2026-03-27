@@ -1,3 +1,5 @@
+[![SecureScan](http://securescan.tegaru.fr/api/scanner/badge/MrMblock/vulnerable-app.svg)](https://github.com/MrMblock/vulnerable-app)
+
 # Vulnerable Test Application
 
 A deliberately vulnerable web application for testing security scanners.
