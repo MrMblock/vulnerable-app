@@ -7,7 +7,7 @@ services:
       - "5000:5000"
     environment:
       - DATABASE_URL=postgresql://admin:password123@db:5432/app
-      - SECRET_KEY=super_secret_key_12345
+      - SECRET_KEY=${SECRET_KEY}
       - DEBUG=true
       - AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
       - AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
