@@ -135,7 +135,7 @@ def ping():
 def dns_lookup():
     domain = request.args.get("domain", "")
     # Another command injection vector
-    output = os.popen(f"nslookup {domain}").read()
+    result = subprocess.check_output(["ping", "-c", "1", host])
     return f"<pre>{output}</pre>"
 
 
